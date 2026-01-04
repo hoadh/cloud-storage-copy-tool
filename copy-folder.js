@@ -4,9 +4,21 @@ const path = require('path');
 const http = require('http');
 const url = require('url');
 
-// Configuration - Update these values
-const SOURCE_FOLDER_ID = 'YOUR_SOURCE_FOLDER_ID';
-const DESTINATION_FOLDER_ID = 'YOUR_DESTINATION_FOLDER_ID';
+const getFolderId = (input) => {
+  const prefix = 'https://drive.google.com/drive/folders/';
+  if (input && input.startsWith(prefix)) {
+    return input.split('folders/')[1].split(/[?#]/)[0];
+  }
+  return input;
+};
+
+const SOURCE_FOLDER_ID = getFolderId(process.argv[2]);
+const DESTINATION_FOLDER_ID = getFolderId(process.argv[3]);
+
+if (!SOURCE_FOLDER_ID || !DESTINATION_FOLDER_ID) {
+  console.error('Usage: node copy-folder.js <SOURCE_FOLDER_ID> <DESTINATION_FOLDER_ID>');
+  process.exit(1);
+}
 
 const CREDENTIALS_PATH = path.join(__dirname, 'credentials.json');
 const TOKEN_PATH = path.join(__dirname, 'token.json');

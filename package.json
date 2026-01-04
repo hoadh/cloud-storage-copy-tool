@@ -1,0 +1,13 @@
+{
+  "name": "google-drive-copy-folder",
+  "version": "1.0.0",
+  "description": "Copy Google Drive folder contents to another folder",
+  "main": "copy-folder.js",
+  "scripts": {
+    "start": "node copy-folder.js"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0",
+    "open": "^11.0.0"
+  }
+}

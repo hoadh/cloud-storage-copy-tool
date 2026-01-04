@@ -1,21 +1,30 @@
 ## Setup
 
-1. Get Google Cloud credentials:
-  - Go to https://console.cloud.google.com
-  - Create a project (or use existing)
-  - Enable the Google Drive API
-  - Create a Service Account (APIs & Services → Credentials → Create Credentials)
-  - Download the JSON key file and save it as credentials.json in this folder
-2. Share folders with the service account:
-  - Copy the service account email (looks like name@project.iam.gserviceaccount.com)
-  - Share both source and destination folders with this email (Editor access)
-3. Update the script:
-Edit copy  -folder.js and set:
-const SOURCE_FOLDER_ID = 'your-source-folder-id';
-const DESTINATION_FOLDER_ID = 'your-destination-folder-id';
-3. (Folder IDs are in the URL: drive.google.com/drive/folders/{FOLDER_ID})
-4. Run:
-npm start
+### To set up
+
+  1. Create OAuth client ID (Desktop app) in Google Cloud Console
+  2. Download the JSON and save as credentials.json in the project folder
+  3. Edit copy-folder.js lines 8-9 with your folder IDs:
+  const SOURCE_FOLDER_ID = 'your-source-folder-id';
+  const DESTINATION_FOLDER_ID = 'your-destination-folder-id';
+
+  To run:
+  npm start
+
+### Steps for OAuth 2.0
+
+  1. Click Create Credentials → OAuth client ID
+  2. If prompted, configure the OAuth consent screen first:
+    - Choose "External" (or "Internal" if using Workspace)
+    - Fill in app name and your email
+    - Add scope: https://www.googleapis.com/auth/drive
+    - Add yourself as a test user
+  3. Back to Create OAuth client ID:
+    - Application type: Desktop app
+    - Give it a name
+    - Click Create
+  4. Download JSON: After creation, click the download icon (⬇️) next to your client ID, or click on it and then click Download JSON
+  5. Save the file as credentials.json in your project folder
 
 ## Features
 

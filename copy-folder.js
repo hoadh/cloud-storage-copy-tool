@@ -4,6 +4,28 @@ const path = require('path');
 const http = require('http');
 const url = require('url');
 
+// Create log file with datetime format
+const now = new Date();
+const timestamp = now.toISOString().replace(/[:.]/g, '-').slice(0, 19);
+const LOG_FILE = path.join(__dirname, `copy-folder-${timestamp}.log`);
+const logStream = fs.createWriteStream(LOG_FILE, { flags: 'a' });
+
+// Override console.log and console.error to also write to log file
+const originalLog = console.log;
+const originalError = console.error;
+
+console.log = (...args) => {
+  const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
+  logStream.write(message + '\n');
+  originalLog.apply(console, args);
+};
+
+console.error = (...args) => {
+  const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
+  logStream.write('[ERROR] ' + message + '\n');
+  originalError.apply(console, args);
+};
+
 const getFolderId = (input) => {
   const prefix = 'https://drive.google.com/drive/folders/';
   if (input && input.startsWith(prefix)) {
@@ -189,6 +211,7 @@ async function copyFolderContents(drive, sourceFolderId, destinationFolderId, in
 async function main() {
   console.log('Google Drive Folder Copy\n');
   console.log('========================\n');
+  console.log(`Log file: ${LOG_FILE}\n`);
 
   try {
     const auth = await authenticate();
@@ -212,8 +235,10 @@ async function main() {
     await copyFolderContents(drive, SOURCE_FOLDER_ID, DESTINATION_FOLDER_ID);
 
     console.log('\nDone! Folder copy completed successfully.');
+    logStream.end();
   } catch (error) {
     console.error('\nError:', error.message);
+    logStream.end();
     process.exit(1);
   }
 }

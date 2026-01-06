@@ -147,10 +147,41 @@ async function listFolderContents(drive, folderId) {
 }
 
 /**
- * Copy a single file to a destination folder
+ * Check if a file already exists in the destination folder
+ */
+async function fileExistsInFolder(drive, fileName, destinationFolderId) {
+  const response = await drive.files.list({
+    q: `'${destinationFolderId}' in parents and name = '${fileName.replace(/'/g, "\\'")}' and trashed = false`,
+    fields: 'files(id, name)',
+    pageSize: 1,
+  });
+  return response.data.files.length > 0 ? response.data.files[0] : null;
+}
+
+/**
+ * Check if a folder already exists in the destination folder
+ */
+async function folderExistsInFolder(drive, folderName, destinationFolderId) {
+  const response = await drive.files.list({
+    q: `'${destinationFolderId}' in parents and name = '${folderName.replace(/'/g, "\\'")}' and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
+    fields: 'files(id, name)',
+    pageSize: 1,
+  });
+  return response.data.files.length > 0 ? response.data.files[0] : null;
+}
+
+/**
+ * Copy a single file to a destination folder (skip if exists)
  */
 async function copyFile(drive, fileId, fileName, destinationFolderId) {
   try {
+    // Check if file already exists
+    const existingFile = await fileExistsInFolder(drive, fileName, destinationFolderId);
+    if (existingFile) {
+      console.log(`  Skipped file (already exists): ${fileName}`);
+      return existingFile;
+    }
+
     const response = await drive.files.copy({
       fileId: fileId,
       requestBody: {
@@ -167,10 +198,17 @@ async function copyFile(drive, fileId, fileName, destinationFolderId) {
 }
 
 /**
- * Create a new folder in the destination
+ * Create a new folder in the destination (or return existing one)
  */
 async function createFolder(drive, folderName, destinationFolderId) {
   try {
+    // Check if folder already exists
+    const existingFolder = await folderExistsInFolder(drive, folderName, destinationFolderId);
+    if (existingFolder) {
+      console.log(`  Skipped folder (already exists): ${folderName}`);
+      return existingFolder;
+    }
+
     const response = await drive.files.create({
       requestBody: {
         name: folderName,

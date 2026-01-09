@@ -7,8 +7,11 @@
     "start": "node copy-folder.js"
   },
   "dependencies": {
+    "@azure/msal-node": "^3.8.4",
+    "@microsoft/microsoft-graph-client": "^3.0.7",
     "commander": "^14.0.2",
     "googleapis": "^144.0.0",
+    "isomorphic-fetch": "^3.0.0",
     "open": "^11.0.0"
   }
 }

@@ -15,7 +15,7 @@ Multi-provider cloud storage copy tool supporting Google Drive, OneDrive (coming
 ## Current Status
 
 ✅ **Google Drive** - Fully supported  
-🚧 **OneDrive** - Coming in Phase 2  
+✅ **OneDrive** - Fully supported (Phase 2 complete!)  
 🚧 **Dropbox** - Coming in Phase 3
 
 ## Quick Start

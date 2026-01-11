@@ -1,6 +1,7 @@
 const UriParser = require('../utils/uri-parser');
 const GoogleDriveProvider = require('./google-drive-provider');
 const OneDriveProvider = require('./onedrive-provider');
+const DropboxProvider = require('./dropbox-provider');
 
 /**
  * Factory for creating provider instances
@@ -12,7 +13,7 @@ class ProviderFactory {
     static providers = {
         'gdrive': GoogleDriveProvider,
         'onedrive': OneDriveProvider,
-        // 'dropbox': DropboxProvider,    // TODO: Phase 3
+        'dropbox': DropboxProvider,
     };
 
     /**

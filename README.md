@@ -136,9 +136,13 @@ google-drive-copy-files/
 └── README.md                         # This file
 ```
 
-## Architecture
+## Documentation
 
-See [DESIGN.md](DESIGN.md) for detailed architecture documentation.
+Comprehensive documentation can be found in the `docs/` directory:
+- [Project Overview & PDR](docs/project-overview-pdr.md)
+- [System Architecture](docs/system-architecture.md)
+- [Code Standards & Structure](docs/code-standards.md)
+- [Codebase Summary](docs/codebase-summary.md)
 
 ## Troubleshooting
 
